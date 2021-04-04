@@ -1,6 +1,6 @@
 const apiKey = "4972d2ac99ced943e674efe5c64859c4";
 const cityInputEl = $("#city-input").val();
-const searchInputEl = $(".btn-success").val();
+const searchInputEl = $(".btn-success");
 const timeDisplayEl = $("#time-display").val();
 
 
@@ -24,9 +24,7 @@ function getWeather() {
         
 }
 
-cityInputEl.addEventListener("click", function () {
+$("#city-input").click(function() { 
     getWeather();
-
 });
-
 
