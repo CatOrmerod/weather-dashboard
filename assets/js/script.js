@@ -3,7 +3,12 @@ const cityFormEl = document.querySelector("#city-search-form")
 const cityInputEl = document.querySelector("#city-input")
 const cityContainerEl = document.querySelector('#city-container');
 const timeDisplayEl = $("#time-display").val();
-
+const cityNameEl = document.querySelector("#city-name")
+const cityIconEl = document.querySelector("#city-icon")
+const cityTempEl = document.querySelector("#temp")
+const cityHumidEl = document.querySelector("#humid")
+const cityWindEl = document.querySelector("#wind")
+const cityUVIEl = document.querySelector("#UVI")
 
 
 let todayDate = moment().format('MMM DD, YYYY [at] hh:mm:ss a');
@@ -32,13 +37,25 @@ var formSubmitHandler = function (event) {
 };
 
 var getWeather = function (city) {
-    let apiURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
+    let apiURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=metric";
   
     fetch(apiURL)
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (data) {
             console.log(data)
+            console.log(data.name)
+            console.log(data.weather.icon)
+            console.log(data.main.temp)
+            console.log(data.main.humidity)
+            console.log(data.wind.speed)
+            console.log(data.main.uvi)  
+            cityNameEl.innerHTML = response.data.name;
+            cityIconEl.innerHTML = response.data.weather.icon;
+            cityTempEl.innerHTML = "Temperature: " + response.data.main.temp;
+            cityHumidEl.innerHTML = "Humidity: " + response.data.main.humidity + "%";
+            cityWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " KPH";
+            //displayWeather(data, city);
           });
         } else {
           alert('Error: ' + response.statusText);
@@ -48,5 +65,9 @@ var getWeather = function (city) {
         alert('Unable to retrieve weather');
       });
   };
+
+// var displayWeather = function (data, city) {
+    
+// }
 
 cityFormEl.addEventListener('submit', formSubmitHandler);
