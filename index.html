@@ -29,14 +29,16 @@
     <section class="container my-5">
         <div class="row">
             <div id="search"class="col-12 col-md-4 col-xl-3">
-                <form>
+                <form id="city-search-form">
                     <div class="form-group">
                       <label for="city-input">Search for a city:</label>
                       <input type="text" class="form-control" id="city-input" placeholder="City Name" />
-                      <button class="btn btn-success"><i class="fas fa-search"></i></button>
+                      <button type="submit" class="btn btn-success"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
-                <div id="search-history"></div>
+                <div>>
+                    <div id="city-container" class="list-group"></div>
+                </div>
             </div>
             <div id="results" class="col-12 col-md-8 col-xl-9">
                 <div id="current-weather"></div>
