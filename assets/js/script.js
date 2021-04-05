@@ -50,11 +50,11 @@ var getWeather = function (city) {
             console.log(data.main.humidity)
             console.log(data.wind.speed)
             console.log(data.main.uvi)  
-            cityNameEl.innerHTML = response.data.name;
-            cityIconEl.innerHTML = response.data.weather.icon;
-            cityTempEl.innerHTML = "Temperature: " + response.data.main.temp;
-            cityHumidEl.innerHTML = "Humidity: " + response.data.main.humidity + "%";
-            cityWindEl.innerHTML = "Wind Speed: " + response.data.wind.speed + " KPH";
+            cityNameEl.innerHTML = data.name;
+            cityIconEl.innerHTML = data.weather.icon;
+            cityTempEl.innerHTML = "Temperature: " + data.main.temp;
+            cityHumidEl.innerHTML = "Humidity: " + data.main.humidity + "%";
+            cityWindEl.innerHTML = "Wind Speed: " + data.wind.speed + " KPH";
             //displayWeather(data, city);
           });
         } else {
