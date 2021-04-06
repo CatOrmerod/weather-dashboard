@@ -27,7 +27,7 @@ var formSubmitHandler = function (event) {
     const city = cityInputEl.value.trim();
   
     if (city) {
-      getWeather(city);
+      getLatLon(city);
   
     //  cityContainerEl.textContent = '';
       cityInputEl.value = '';
@@ -36,14 +36,37 @@ var formSubmitHandler = function (event) {
     }
 };
 
-var getWeather = function (city) {
+var getLatLon = function (city) {
     let apiURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=metric";
   
     fetch(apiURL)
       .then(function (response) {
         if (response.ok) {
           response.json().then(function (data) {  
-            displayWeather(data, city)
+            console.log(data.coord.lon)
+            console.log(data.coord.lat)
+            let cityLat = data.coord.lat
+            let cityLon = data.coord.lon
+            getWeather(cityLat, cityLon)
+          });
+        } else {
+          alert('Error: ' + response.statusText);
+        }
+      })
+      .catch(function (error) {
+        alert('Unable to retrieve weather');
+      });
+  };
+
+var getWeather = function (cityLat, cityLon) {
+    let apiLLURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + cityLat + "&lon=" + cityLon + "&appid=" + apiKey + "&units=metric";
+  
+    fetch(apiLLURL)
+      .then(function (response) {
+        if (response.ok) {
+          response.json().then(function (data) {  
+              console.log(data)
+            displayWeather(data)
           });
         } else {
           alert('Error: ' + response.statusText);
@@ -55,13 +78,27 @@ var getWeather = function (city) {
   };
 
 var displayWeather = function (data, city) {
-        cityNameEl.innerHTML = data.name;
-        let weatherIcon = data.weather[0].icon;
+        cityNameEl.innerHTML = city;
+        let weatherIcon = data.current.weather[0].icon;
         cityIconEl.setAttribute("src","https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png");
-        cityIconEl.setAttribute("alt",data.weather[0].description);
-        cityTempEl.innerHTML = "Temperature: " + data.main.temp;
-        cityHumidEl.innerHTML = "Humidity: " + data.main.humidity + "%";
-        cityWindEl.innerHTML = "Wind Speed: " + data.wind.speed + " KPH";
+        cityIconEl.setAttribute("alt",data.current.weather[0].description);
+        cityTempEl.innerHTML = "Temperature: " + data.current.temp;
+        cityHumidEl.innerHTML = "Humidity: " + data.current.humidity + "%";
+        cityWindEl.innerHTML = "Wind Speed: " + data.current.wind_speed + " KPH";
+        cityUVIEl.innerHTML = "UV Index: " + data.current.uvi;
+        UVIndex(data)
+}
+
+var UVIndex = function (data) {
+    if (data.current.uvi < 4 ) {
+        cityUVIEl.setAttribute("class", "badge badge-success");
+    }
+    else if (data.current.uvi < 8) {
+        cityUVIEl.setAttribute("class", "badge badge-warning");
+    }
+    else {
+        cityUVIEl.setAttribute("class", "badge badge-danger");
+    }
 }
 
 cityFormEl.addEventListener('submit', formSubmitHandler);
