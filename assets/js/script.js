@@ -9,6 +9,7 @@ const cityTempEl = document.querySelector("#temp")
 const cityHumidEl = document.querySelector("#humid")
 const cityWindEl = document.querySelector("#wind")
 const cityUVIEl = document.querySelector("#UVI")
+const fiveDayContainerEl = document.querySelector("#five-day-container")
 
 
 let todayDate = moment().format('MMM DD, YYYY [at] hh:mm:ss a');
@@ -67,6 +68,7 @@ var getWeather = function (cityLat, cityLon) {
           response.json().then(function (data) {  
               console.log(data)
             displayWeather(data)
+            fiveDayForecast(data)
           });
         } else {
           alert('Error: ' + response.statusText);
@@ -99,6 +101,26 @@ var UVIndex = function (data) {
     else {
         cityUVIEl.setAttribute("class", "badge badge-danger");
     }
+}
+
+var fiveDayForecast = function (data) {
+  for (var i = 1; i < 6; i++) {
+    var forecastDateEl = document.createElement("p");
+    var forecastIconEl = document.createElement("img");
+    var forecastTempEl = document.createElement("p");
+    var forecastHumidEl = document.createElement("p");
+    forecastDateEl.innerHTML = data.daily[i].dt;
+    let forecastIcon = data.daily[i].weather[0].icon;
+    forecastIconEl.setAttribute("src","https://openweathermap.org/img/wn/" + forecastIcon + "@2x.png");
+    forecastIconEl.setAttribute("alt",data.daily[i].weather[0].description);
+    forecastTempEl.innerHTML = "Temperature: " + data.daily[i].temp.day;
+    forecastHumidEl.innerHTML = "Humidity: " + data.daily[i].humidity + "%";
+
+    fiveDayContainerEl.appendChild(forecastDateEl);
+    fiveDayContainerEl.appendChild(forecastIconEl);
+    fiveDayContainerEl.appendChild(forecastTempEl);
+    fiveDayContainerEl.appendChild(forecastHumidEl);
+  }
 }
 
 cityFormEl.addEventListener('submit', formSubmitHandler);
