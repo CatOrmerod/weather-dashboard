@@ -42,20 +42,8 @@ var getWeather = function (city) {
     fetch(apiURL)
       .then(function (response) {
         if (response.ok) {
-          response.json().then(function (data) {
-            console.log(data)
-            console.log(data.name)
-            console.log(data.weather.icon)
-            console.log(data.main.temp)
-            console.log(data.main.humidity)
-            console.log(data.wind.speed)
-            console.log(data.main.uvi)  
-            cityNameEl.innerHTML = data.name;
-            cityIconEl.innerHTML = data.weather.icon;
-            cityTempEl.innerHTML = "Temperature: " + data.main.temp;
-            cityHumidEl.innerHTML = "Humidity: " + data.main.humidity + "%";
-            cityWindEl.innerHTML = "Wind Speed: " + data.wind.speed + " KPH";
-            //displayWeather(data, city);
+          response.json().then(function (data) {  
+            displayWeather(data, city)
           });
         } else {
           alert('Error: ' + response.statusText);
@@ -66,8 +54,14 @@ var getWeather = function (city) {
       });
   };
 
-// var displayWeather = function (data, city) {
-    
-// }
+var displayWeather = function (data, city) {
+        cityNameEl.innerHTML = data.name;
+        let weatherIcon = data.weather[0].icon;
+        cityIconEl.setAttribute("src","https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png");
+        cityIconEl.setAttribute("alt",data.weather[0].description);
+        cityTempEl.innerHTML = "Temperature: " + data.main.temp;
+        cityHumidEl.innerHTML = "Humidity: " + data.main.humidity + "%";
+        cityWindEl.innerHTML = "Wind Speed: " + data.wind.speed + " KPH";
+}
 
 cityFormEl.addEventListener('submit', formSubmitHandler);
