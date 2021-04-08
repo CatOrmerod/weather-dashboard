@@ -11,16 +11,12 @@ const cityWindEl = document.querySelector("#wind")
 const cityUVIEl = document.querySelector("#UVI")
 const fiveDayContainerEl = document.querySelector("#five-day-container")
 
+let cityHistoryArr = [];
+
+
 
 let todayDate = moment().format('MMM DD, YYYY [at] hh:mm:ss a');
 $("#time-display").html(todayDate);
-
-// let searchBtn = $(".btn-success");
-//     searchBtn.on("click", function () {
-//         let city = $(this).siblings("#city-input").val().trim();
-    
-//         localStorage.setItem(city);
-//     })
 
 var formSubmitHandler = function (event) {
     event.preventDefault();
@@ -29,12 +25,12 @@ var formSubmitHandler = function (event) {
   
     if (city) {
       getLatLon(city);
-  
-    //  cityContainerEl.textContent = '';
+      cityHistoryArr.unshift({city})
       cityInputEl.value = '';
     } else {
       alert('Please enter a city');
     }
+    saveSearch();
 };
 
 var getLatLon = function (city) {
@@ -123,4 +119,39 @@ var fiveDayForecast = function (data) {
   }
 }
 
+var saveSearch = function(cityLat, cityLon) {
+  cityInputEl = document.getElementById("city-input").value;
+  var citySearchData = {
+    city: cityInputEl,
+    lat = cityLat,
+    lon = cityLon,
+  };
+  let cityHistoryArr = JSON.parse(localStorage.getItem("cityHistoryArr") || "[]");
+  cityHistoryArr.push(citySearchData);
+  localStorage.setItem("cityHistoryArr", JSON.stringify(cityHistoryArr));
+  console.log(cityHistoryArr);
+  console.log(citySearchData);
+  console.log(lat);
+}
+
+document.getElementById("cityContainerEl").addEventListener("click", function(e){
+  var cityHistoryArr = JSON.parse(localStorage.getItem("citySearchData") || "[]");
+    for (let i = 0; i<cityHistoryArr.length; i++) {
+      var citySearchBtn = document.createElement("button");
+      citySearchBtn.classList = "btn btn-info btn-block";
+      citySearchBtn.setAttribute("type", "submit");
+      citySearchBtn.textContent = cityHistoryArr[i].city;
+      document.getElementById("cityContainerEl").appendChild(citySearchBtn);
+    }
+})
+
+
+var buttonHandler = function(event){
+  cityHistoryArr = JSON.parse(localStorage.getItem("citySearchData") || "[]");
+  console.log(cityHistoryArr);
+  getWeather(cityLat, CityLon)
+  }
+}      
+
 cityFormEl.addEventListener('submit', formSubmitHandler);
+cityContainerEl.addEventListener("click", buttonHandler);
