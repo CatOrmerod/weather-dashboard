@@ -141,22 +141,21 @@ var saveSearch = function(city, cityLat, cityLon) {
 }
 
 var createBtn = function(city, cityLat, cityLon) {  
-    var citySearchBtn = document.createElement("button");
-    citySearchBtn.classList = "btn btn-info btn-block";
-    citySearchBtn.setAttribute("type", "submit");
-    citySearchBtn.setAttribute("data-lat", cityLat);
-    citySearchBtn.setAttribute("data-lon", cityLon);
-    citySearchBtn.textContent = city;
-    console.log(cityContainerEl);
-    cityContainerEl.append(citySearchBtn);
-    citySearchBtn.addEventListener("click", buttonHandler)    
+  var citySearchBtn = document.createElement("button");
+  citySearchBtn.classList = "btn btn-info btn-block";
+  citySearchBtn.setAttribute("type", "submit");
+  citySearchBtn.setAttribute("data-lat", cityLat);
+  citySearchBtn.setAttribute("data-lon", cityLon);
+  citySearchBtn.textContent = city;
+  console.log(cityContainerEl);
+  cityContainerEl.append(citySearchBtn);
+  citySearchBtn.addEventListener("click", buttonHandler)    
 }
 
 var createBtnFromStorage = function() {  
   var cityHistoryArr = JSON.parse(localStorage.getItem("cityHistoryArr") || "[]");
     for (let i = 0; i<cityHistoryArr.length; i++) {
       createBtn(cityHistoryArr[i].city, cityHistoryArr[i].cityLat, cityHistoryArr[i].cityLon);
-      
     }
 }
 
@@ -169,5 +168,22 @@ var buttonHandler = function(event){
   console.log(event.target);
 }      
 
+var getLocation = function () {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    alert('Geolocation is not supported by this browser');
+  }
+}
+
+function showPosition(position) {
+  let lat = position.coords.latitude;
+  let lon = position.coords.longitude;
+  console.log(lat);
+  console.log(lon);
+  getWeather(lat, lon);
+}
+
 cityFormEl.addEventListener('submit', formSubmitHandler);
 createBtnFromStorage()
+getLocation()
