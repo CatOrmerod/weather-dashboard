@@ -195,7 +195,7 @@ function showPosition(position) {
 }
 
 function getCityReverse(lat, lon) {
-  let reverseAPIURL = "http://api.openweathermap.org/geo/1.0/reverse?&lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+  let reverseAPIURL = "https://api.openweathermap.org/geo/1.0/reverse?&lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
 
   fetch(reverseAPIURL)
     .then(function (response) {
