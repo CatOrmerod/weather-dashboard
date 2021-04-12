@@ -79,7 +79,7 @@ var displayWeather = function (data, city) {
         let weatherIcon = data.current.weather[0].icon;
         cityIconEl.setAttribute("src","https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png");
         cityIconEl.setAttribute("alt",data.current.weather[0].description);
-        cityTempEl.innerHTML = "Temperature: " + data.current.temp;
+        cityTempEl.innerHTML = "Temperature: " + data.current.temp + " °C";
         cityHumidEl.innerHTML = "Humidity: " + data.current.humidity + "%";
         cityWindEl.innerHTML = "Wind Speed: " + data.current.wind_speed + " KPH";
         cityUVIEl.innerHTML = "UV Index: " + data.current.uvi;
@@ -110,11 +110,11 @@ var fiveDayForecast = function (data) {
     var forecastTempEl = document.createElement("p");
     var forecastHumidEl = document.createElement("p");
     
-    forecastDateEl.innerHTML = moment(data.daily[i].dt.value).format("MMM D, YYYY");
+    forecastDateEl.innerHTML = moment.unix(data.daily[i].dt).format("MMM D, YYYY, hh:mm");
     let forecastIcon = data.daily[i].weather[0].icon;
     forecastIconEl.setAttribute("src","https://openweathermap.org/img/wn/" + forecastIcon + "@2x.png");
     forecastIconEl.setAttribute("alt",data.daily[i].weather[0].description);
-    forecastTempEl.innerHTML = "Temperature: " + data.daily[i].temp.day;
+    forecastTempEl.innerHTML = "Temp: " + data.daily[i].temp.day + " °C";
     forecastHumidEl.innerHTML = "Humidity: " + data.daily[i].humidity + "%";
 
     fiveDayEl.appendChild(forecastDateEl);
@@ -142,7 +142,7 @@ var saveSearch = function(city, cityLat, cityLon) {
 
 var createBtn = function(city, cityLat, cityLon) {  
   var citySearchBtn = document.createElement("button");
-  citySearchBtn.classList = "btn btn-info btn-block";
+  citySearchBtn.classList = "d-flex w-100 btn-light border p-2";
   citySearchBtn.setAttribute("type", "submit");
   citySearchBtn.setAttribute("data-lat", cityLat);
   citySearchBtn.setAttribute("data-lon", cityLon);
@@ -179,6 +179,7 @@ var getLocation = function () {
 function showPosition(position) {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
+  console.log(position)
   console.log(lat);
   console.log(lon);
   getWeather(lat, lon);
