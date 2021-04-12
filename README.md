@@ -1,3 +1,4 @@
+
 # weather-dashboard
 Weather Dashboard that runs in the browser and features dynamically updated HTML and CSS
 
@@ -23,6 +24,7 @@ Use the Open Weather Map API to display the current, and 5 day forecast for a ci
 ## Screenshots
 
 The following image shows the web application's appearance and functionality:
+![screenshot-weather-dashboard](https://user-images.githubusercontent.com/78625200/114381381-67161200-9bce-11eb-8cab-aea542b2ef4d.png)
 
 
 
